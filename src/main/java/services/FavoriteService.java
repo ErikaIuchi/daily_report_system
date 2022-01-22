@@ -82,5 +82,19 @@ public class FavoriteService extends ServiceBase {
 		return count;
 	}
 
+	/**
+	 * 指定した日報データについたいいねの件数を取得し、返却する
+	 * @param report
+	 * @return
+	 */
+	public long countAllMine(ReportView report) {
+
+		long count = (long)em.createNamedQuery(JpaConst.Q_FAV_COUNT_ALL_MINE, Long.class)
+				.setParameter(JpaConst.JPQL_PARM_REPORT, ReportConverter.toModel(report))
+				.getSingleResult();
+
+		return count;
+	}
+
 
 }
