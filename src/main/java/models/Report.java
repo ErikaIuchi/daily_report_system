@@ -94,4 +94,10 @@ public class Report {
     @Column(name = JpaConst.REP_COL_UPDATED_AT, nullable = false)
     private LocalDateTime updatedAt;
 
+    /**
+     * いいね
+     */
+    @Column(name = JpaConst.REP_COL_FAVORITE, nullable = false)
+    private Integer favorite;
+
 }
