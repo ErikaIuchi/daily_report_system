@@ -7,11 +7,13 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.EmployeeView;
+import actions.views.FavoriteView;
 import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.FavoriteService;
 import services.ReportService;
 
 /**
@@ -21,6 +23,8 @@ import services.ReportService;
 public class ReportAction extends ActionBase {
 
     private ReportService service;
+    private FavoriteService favService;
+
 
     /**
      * メソッドを実行する
@@ -29,9 +33,11 @@ public class ReportAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         service = new ReportService();
+        favService = new FavoriteService();
 
         //メソッドを実行
         invoke();
+        favService.close();
         service.close();
     }
 
@@ -251,6 +257,20 @@ public class ReportAction extends ActionBase {
 
         //日報情報を更新
         service.update(rv);
+
+      //いいねテーブルに登録
+        //セッションからログイン中の従業員情報を取得
+        EmployeeView ev = (EmployeeView)getSessionScope(AttributeConst.LOGIN_EMP);
+        //パラメータの値をもとにいいねのインスタンスを作成する
+        FavoriteView fv = new FavoriteView(
+            null,
+            ev,
+            rv,
+            null,
+            null);
+
+        //いいね情報登録
+        favService.create(fv);
 
        //セッションに更新完了のフラッシュメッセージを設定
         putSessionScope(AttributeConst.FLUSH, MessageConst.I_FAVORITE.getMessage());
