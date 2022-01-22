@@ -167,3 +167,12 @@ pre {
 h3 {
     font-size: larger;
 }
+
+table#favorite_list .favorite_name{
+    width: 20%;
+    padding: 10px 2%;
+}
+
+table#favorite_list .favorite_date {
+    width: 80%;
+}

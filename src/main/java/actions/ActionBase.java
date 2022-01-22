@@ -241,4 +241,19 @@ public abstract class ActionBase {
         return (R) context.getAttribute(key.getValue());
     }
 
+
+    /**
+     * 指定されたjspの呼び出しを行う
+     * @param forward 遷移先jsp画面のファイル名(パス、拡張子を含む)
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void forward(String forward) throws ServletException, IOException {
+
+        //jspファイルの呼び出し
+        RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
+        dispatcher.forward(request, response);
+
+    }
+
 }
