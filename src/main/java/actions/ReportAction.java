@@ -288,8 +288,8 @@ public class ReportAction extends ActionBase {
 
 
       //いいね一覧画面を表示
-      //forward(ForwardConst.FW_REP_FAV_SHOW);
-      forward("/WEB-INF/views/reports/favShow.jsp");
+      forward(ForwardConst.FW_REP_FAV_SHOW);
+      //forward("/WEB-INF/views/reports/favShow.jsp");
 
     }
 }
