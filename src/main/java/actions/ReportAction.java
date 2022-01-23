@@ -155,6 +155,8 @@ public class ReportAction extends ActionBase {
      */
     public void show() throws ServletException, IOException {
 
+    	//セッションからログイン中の従業員情報を取得
+        EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
         //idを条件に日報データを取得する
         ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
 
@@ -165,6 +167,11 @@ public class ReportAction extends ActionBase {
         } else {
 
             putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+
+            //いま日報を開いている人がいま開いている日報にいいねしているかどうかを判断
+            long favoriteCount = favService.isFavorite(ev,rv);
+
+            putRequestScope(AttributeConst.FAV_COUNT, favoriteCount);
 
             //詳細画面を表示
             forward(ForwardConst.FW_REP_SHOW);
@@ -285,7 +292,16 @@ public class ReportAction extends ActionBase {
      */
     public void favShow() throws ServletException, IOException {
 
-
+    	//idを条件に日報データを取得する
+        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+       	//指定した日報についたいいねを指定されたページ数の一覧画面に表示する分取得する
+       	int page = getPage();
+       	List<FavoriteView> favorites = favService.getMinePerPage(rv, page);
+       	long favoriteCount = favService.countAllMine(rv);
+       	putRequestScope(AttributeConst.FAVORITES, favorites); //取得したいいね
+       	putRequestScope(AttributeConst.FAV_COUNT, favoriteCount); //いいねの数
+       	putRequestScope(AttributeConst.PAGE, page); //ページ数
+        putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
 
       //いいね一覧画面を表示
       forward(ForwardConst.FW_REP_FAV_SHOW);

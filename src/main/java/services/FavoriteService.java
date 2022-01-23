@@ -35,20 +35,6 @@ public class FavoriteService extends ServiceBase {
 	}
 
 	/**
-	 * いいねした人一覧ページネーション用
-	 * @param page
-	 * @return　一覧画面に表示するデータのリスト
-	 */
-	public List<FavoriteView> getAllPerPage(int page){
-
-		List<Favorite> favorites = em.createNamedQuery(JpaConst.Q_FAV_GET_ALL, Favorite.class)
-				.setFirstResult(JpaConst.ROW_PER_PAGE * (page - 1))
-                .setMaxResults(JpaConst.ROW_PER_PAGE)
-                .getResultList();
-		return FavoriteConverter.toViewList(favorites);
-	}
-
-	/**
 	 * いいねテーブルに登録する
 	 * @param fv
 	 */
@@ -89,7 +75,7 @@ public class FavoriteService extends ServiceBase {
 	 */
 	public long countAllMine(ReportView report) {
 
-		long count = (long)em.createNamedQuery(JpaConst.Q_FAV_COUNT_ALL_MINE, Long.class)
+		long count = (long)em.createNamedQuery(JpaConst.Q_FAV_GET_ALL, Long.class)
 				.setParameter(JpaConst.JPQL_PARM_REPORT, ReportConverter.toModel(report))
 				.getSingleResult();
 
